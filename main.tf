@@ -49,7 +49,8 @@ resource "aws_s3_bucket" "blog" {
   }
 }
 
-resource "aws_dynamodb_table" "us-west-2" {
+resource "aws_dynamodb_table" "blog" {
+  provider = aws.us-west-2
   hash_key         = "myAttribute"
   name             = "myTable"
   stream_enabled   = true
