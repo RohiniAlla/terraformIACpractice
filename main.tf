@@ -49,20 +49,6 @@ resource "aws_s3_bucket" "blog" {
   }
 }
 
-resource "aws_dynamodb_table" "blog" {
-  hash_key         = "myAttribute"
-  name             = "myTable"
-  stream_enabled   = true
-  stream_view_type = "NEW_AND_OLD_IMAGES"
-  read_capacity    = 1
-  write_capacity   = 1
-
-  attribute {
-    name = "myAttribute"
-    type = "S"
-  }
-}
-
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 8.0"
