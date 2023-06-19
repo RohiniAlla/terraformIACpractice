@@ -13,6 +13,7 @@ data "aws_ami" "app_ami" {
 
   owners = ["979382823631"] # Bitnami
 }
+
 module "blog_vpc" {
   source = "terraform-aws-modules/vpc/aws"
   name = "my-vpc"
@@ -48,13 +49,22 @@ resource "aws_s3_bucket" "blog" {
   }
 }
 
-resource "aws_s3_bucket" "blog" {
-  bucket = "my-tf-test-bucket1"
-  tags = {
-    Name        = "My bucket1"
-    Environment = "Dev"
+resource "aws_dynamodb_table" "us-west-2" {
+  provider = aws.us-west-2
+
+  hash_key         = "myAttribute"
+  name             = "myTable"
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
+  read_capacity    = 1
+  write_capacity   = 1
+
+  attribute {
+    name = "myAttribute"
+    type = "S"
   }
 }
+
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 8.0"
